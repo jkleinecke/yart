@@ -4,6 +4,7 @@
 #pragma once
 
 #include <atomic>
+#include <algorithm>
 
 template<typename Element, size_t Size>
 class ProducerConsumerQueue
@@ -24,7 +25,7 @@ public:
 			return false ;
 
 		// still room... store the item and increment the tail
-		m_Elements[tail] = item ;
+		m_Elements[tail] = std::move(item) ;
 		m_Tail.store(next_tail, std::memory_order_release) ;
 
 		return true ;	// Success!
@@ -39,7 +40,7 @@ public:
 			return false ;
 
 		// still have some items
-		refItem = m_Elements[head] ;
+		refItem = std::move(m_Elements[head]) ;
 		m_Head.store(increment(head), std::memory_order_release) ;
 
 		return true ;	// Success!

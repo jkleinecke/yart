@@ -16,6 +16,7 @@ namespace yart {
 	public:
 		RunLoop() ;
 	private:
+		RunLoop(const RunLoop& ref) {}	// don't allow...
 		~RunLoop() ;
 
 	public:
